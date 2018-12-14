@@ -54,9 +54,48 @@ select * from dba_tablespaces;
 -- DATAFILES INFO
 SELECT * FROM dba_data_files;
 
--- USERS AND ROLES
+-- USERS
 SELECT USERNAME, ACCOUNT_STATUS, COMMON, EXPIRY_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE, PROFILE, CREATED
 FROM dba_users;
 
--- 
+-- PGA E SGA MEMORY
+-- sga
+show sga;
+select sum(bytes) from v$sgastat
+    where POOL='shared pool' and NOT NAME='free memory';
+select * from v$sysstat
+    where NAME LIKE 'session%';
+select * from v$sesstat;
+    where NAME LIKE 'session%';
+select * from v$sga;
+-- pga
+SELECT name, value FROM v$pgastat
+    WHERE NAME='total PGA inuse';
+SELECT ROUND(SUM(pga_used_mem)/(1024*1024),2) PGA_USED_MB FROM v$process;
+
+-- SESSIONS
+select * from v$session
+    where username IS NOT NULL;
+    
+-- CPU
+select 
+   ss.username,
+   se.SID,
+   VALUE/100 cpu_usage_seconds
+from
+   v$session ss, 
+   v$sesstat se, 
+   v$statname sn
+where
+   se.STATISTIC# = sn.STATISTIC#
+and
+   NAME like '%CPU used by this session%'
+and
+   se.SID = ss.SID
+and 
+   ss.status='ACTIVE'
+and 
+   ss.username is not null
+order by VALUE desc;
+select * from v$sesstat;
 
