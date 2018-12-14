@@ -48,3 +48,15 @@ FROM dba_tablespaces) ts
 WHERE fr.tablespace_name = df.tablespace_name (+)
 AND fr.tablespace_name = ts.tablespace_name (+)
 ORDER BY "% Free" desc;
+
+select * from dba_tablespaces;
+  
+-- DATAFILES INFO
+SELECT * FROM dba_data_files;
+
+-- USERS AND ROLES
+SELECT USERNAME, ACCOUNT_STATUS, COMMON, EXPIRY_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE, PROFILE, CREATED
+FROM dba_users;
+
+-- 
+
