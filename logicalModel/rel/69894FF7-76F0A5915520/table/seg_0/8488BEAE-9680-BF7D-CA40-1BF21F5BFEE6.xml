@@ -1,0 +1,156 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8488BEAE-9680-BF7D-CA40-1BF21F5BFEE6" name="MONITOR.DATAFILES">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:15 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<ordsAlias>table_5</ordsAlias>
+<abbreviation>DATAFILES</abbreviation>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="filename" id="6CA2084D-98FE-63AD-8426-FCA17DD78CC4">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>300</dataTypeSize>
+<ownDataTypeParameters>300,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fileId" id="C77C6875-D46C-1880-81F1-4E56E53B697C">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="tableName" id="A58D3766-578B-AEDB-2FAD-4909E27D1A20">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="bytes" id="D4F677FF-C801-BEAB-57BA-8FC70E3540A1">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="blocks" id="EB04E26F-E491-933C-EBF3-B74997454FA7">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="status" id="443F3A06-3028-1059-B9EE-AA5344683668">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="autoextensible" id="92CF6C78-852A-CBE4-86E2-A40C4812410C">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="maxbytes" id="0AD7214E-3005-11D8-9EAF-5FCF2A7D20DD">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="maxblocks" id="2DB0018C-CCFC-D41A-928F-90E14B198EA1">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="onlineStatus" id="8F458AE5-3E59-9B1E-E77F-C4761F11DBFE">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TABLESPACE" id="79C2C98B-5287-BD9D-718B-6B39A298FB86">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:44 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C23A1C02-9CC7-6CFF-BBF3-6808BEEB2CA4" referredColumn="E209EB32-3741-4EBE-0609-68FB9676D932"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="C4B2F9BE-620C-DD99-08FA-B7D541E7DBC8" name="MONITOR.DATAFILES_PK">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6CA2084D-98FE-63AD-8426-FCA17DD78CC4"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="50CA30B7-D874-919A-DF0F-BE29F310B976" name="MONITOR.DATAFILES_TABLESPACES_FK">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:44 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="79C2C98B-5287-BD9D-718B-6B39A298FB86"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

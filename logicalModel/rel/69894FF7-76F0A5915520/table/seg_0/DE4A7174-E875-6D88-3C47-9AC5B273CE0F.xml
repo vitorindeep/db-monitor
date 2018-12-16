@@ -1,0 +1,97 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DE4A7174-E875-6D88-3C47-9AC5B273CE0F" name="MONITOR.TABLESPACES">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 18:30:34 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<ordsAlias>table_4</ordsAlias>
+<abbreviation>TABLESPACES</abbreviation>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="name" id="E209EB32-3741-4EBE-0609-68FB9676D932">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fileCount" id="31C14084-F9C7-693F-C997-7B169DBEDD41">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="size" id="C7341D9A-6C81-FB81-1CDA-B838CCCC9B99">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="free" id="BF9EF700-BFBF-B140-540B-4447178814B4">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="used" id="7622333B-0325-2DE8-99D5-F3E55ECEAAA9">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="maxExtend" id="25971245-37ED-880D-200C-E2BD39989E06">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="percFree" id="17B6972D-9BC3-87B4-454D-893860C0B9C0">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="3FA7D825-AD95-7C45-FBEB-9C85247E4098" name="TABLESPACES_PK">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:12 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E209EB32-3741-4EBE-0609-68FB9676D932"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

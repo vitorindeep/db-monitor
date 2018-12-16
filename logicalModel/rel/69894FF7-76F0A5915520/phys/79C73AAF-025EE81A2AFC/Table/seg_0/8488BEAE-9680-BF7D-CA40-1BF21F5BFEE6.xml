@@ -1,0 +1,83 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev12c class="oracle.dbtools.crest.model.design.storage.oracle.v12c.TableProxyOraclev12c" name="MONITOR.DATAFILES" directorySegmentName="seg_0" id="8488BEAE-9680-BF7D-CA40-1BF21F5BFEE6">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:03:15 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="maxbytes" id="0AD7214E-3005-11D8-9EAF-5FCF2A7D20DD">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="maxblocks" id="2DB0018C-CCFC-D41A-928F-90E14B198EA1">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="status" id="443F3A06-3028-1059-B9EE-AA5344683668">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="filename" id="6CA2084D-98FE-63AD-8426-FCA17DD78CC4">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="TABLESPACE" id="79C2C98B-5287-BD9D-718B-6B39A298FB86">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:44 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="onlineStatus" id="8F458AE5-3E59-9B1E-E77F-C4761F11DBFE">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="autoextensible" id="92CF6C78-852A-CBE4-86E2-A40C4812410C">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="tableName" id="A58D3766-578B-AEDB-2FAD-4909E27D1A20">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="fileId" id="C77C6875-D46C-1880-81F1-4E56E53B697C">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="bytes" id="D4F677FF-C801-BEAB-57BA-8FC70E3540A1">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="blocks" id="EB04E26F-E491-933C-EBF3-B74997454FA7">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.FKProxyOraclev10g" name="MONITOR.DATAFILES_TABLESPACES_FK" id="50CA30B7-D874-919A-DF0F-BE29F310B976">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:44 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="MONITOR.DATAFILES_PK" id="C4B2F9BE-620C-DD99-08FA-B7D541E7DBC8">
+<createdBy>VJRC1</createdBy>
+<createdTime>2018-12-16 19:07:16 UTC</createdTime>
+<ownerDesignName>logicalModel</ownerDesignName>
+<indexSort>SORTED</indexSort>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev12c>
