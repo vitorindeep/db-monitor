@@ -52,7 +52,7 @@ ORDER BY "% Free" desc;
 select * from dba_tablespaces;
   
 -- DATAFILES INFO
-SELECT * FROM dba_data_files;
+maxbloc
 
 -- USERS
 SELECT USERNAME, ACCOUNT_STATUS, COMMON, EXPIRY_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE, PROFILE, CREATED
@@ -60,7 +60,6 @@ FROM dba_users;
 
 -- PGA E SGA MEMORY
 -- sga
-show sga;
 select sum(bytes) from v$sgastat
     where POOL='shared pool' and NOT NAME='free memory';
 select * from v$sysstat
@@ -74,28 +73,31 @@ SELECT name, value FROM v$pgastat
 SELECT ROUND(SUM(pga_used_mem)/(1024*1024),2) PGA_USED_MB FROM v$process;
 
 -- SESSIONS
-select * from v$session
+select sid, username, status, server, schemaname, osuser, machine, port, type, logon_time from v$session
     where username IS NOT NULL;
     
 -- CPU
-select 
-   ss.username,
-   se.SID,
-   VALUE/100 cpu_usage_seconds
-from
-   v$session ss, 
-   v$sesstat se, 
-   v$statname sn
-where
-   se.STATISTIC# = sn.STATISTIC#
-and
-   NAME like '%CPU used by this session%'
-and
-   se.SID = ss.SID
-and 
-   ss.status='ACTIVE'
-and 
-   ss.username is not null
-order by VALUE desc;
-select * from v$sesstat;
+SELECT USERNAME, SUM(CPU_USAGE) AS CPU_USAGE FROM
+(
+SELECT se.username, ROUND (value/100) AS CPU_USAGE
+FROM v$session se, v$sesstat ss, v$statname st
+WHERE ss.statistic# = st.statistic#
+   AND name LIKE  '%CPU used by this session%'
+   AND se.sid = ss.SID
+   AND se.username IS NOT NULL
+  ORDER BY value DESC
+)
+GROUP BY USERNAME;
+  
+   
+-- % utilizacao sessao
+select (select value from v$osstat
+            where STAT_NAME='BUSY_TIME')
+        /
+        (select SUM(value) from v$osstat
+            where STAT_NAME='BUSY_TIME'
+                or STAT_NAME='IDLE_TIME')
 
+select * from v$osstat
+    where STAT_NAME='BUSY_TIME'
+        or STAT_NAME='IDLE_TIME';
