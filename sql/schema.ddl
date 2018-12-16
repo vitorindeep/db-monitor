@@ -3,12 +3,18 @@
 --   site:      Oracle Database 12cR2
 --   type:      Oracle Database 12cR2
 
-
-
+-- DROPS
 DROP TABLE "MONITOR.DATAFILES" CASCADE CONSTRAINTS;
-
 DROP TABLE "MONITOR.TABLESPACES" CASCADE CONSTRAINTS;
+DROP TABLE "MONITOR.USERS" CASCADE CONSTRAINTS;
+DROP TABLE "MONITOR.SESSIONS" CASCADE CONSTRAINTS;
+DROP TABLE "MONITOR.SGA" CASCADE CONSTRAINTS;
+DROP TABLE "MONITOR.PGA" CASCADE CONSTRAINTS;
+DROP TABLE "MONITOR.CPU" CASCADE CONSTRAINTS;
 
+
+
+-- DATAFILES
 CREATE TABLE "MONITOR.DATAFILES" (
     filename         VARCHAR2(300) NOT NULL,
     fileid           NUMBER NOT NULL,
@@ -20,24 +26,13 @@ CREATE TABLE "MONITOR.DATAFILES" (
     maxbytes         NUMBER NOT NULL,
     maxblocks        NUMBER NOT NULL,
     onlinestatus     VARCHAR2(100) NOT NULL,
-    tablespace       VARCHAR2(100) NOT NULL
+    tablespace       VARCHAR2(100) NOT NULL,
+    timestamp        TIMESTAMP NOT NULL
 )
 LOGGING;
 
-ALTER TABLE "MONITOR.DATAFILES" ADD CONSTRAINT "MONITOR.DATAFILES_PK" PRIMARY KEY ( filename );
-
-CREATE TABLE "MONITOR.TABLESPACES" (
-    name        VARCHAR2(100) NOT NULL,
-    filecount   NUMBER NOT NULL,
-    "size"      NUMBER NOT NULL,
-    free        NUMBER NOT NULL,
-    used        NUMBER NOT NULL,
-    maxextend   NUMBER NOT NULL,
-    percfree    NUMBER NOT NULL
-)
-LOGGING;
-
-ALTER TABLE "MONITOR.TABLESPACES" ADD CONSTRAINT tablespaces_pk PRIMARY KEY ( name );
+ALTER TABLE "MONITOR.DATAFILES"
+    ADD CONSTRAINT "MONITOR.DATAFILES_PK" PRIMARY KEY ( filename );
 
 ALTER TABLE "MONITOR.DATAFILES"
     ADD CONSTRAINT "MONITOR.DATAFILES_TABLESPACES_FK" FOREIGN KEY ( tablespace )
@@ -46,44 +41,138 @@ ALTER TABLE "MONITOR.DATAFILES"
 
 
 
--- Oracle SQL Developer Data Modeler Summary Report: 
--- 
--- CREATE TABLE                             2
--- CREATE INDEX                             0
--- ALTER TABLE                              3
--- CREATE VIEW                              0
--- ALTER VIEW                               0
--- CREATE PACKAGE                           0
--- CREATE PACKAGE BODY                      0
--- CREATE PROCEDURE                         0
--- CREATE FUNCTION                          0
--- CREATE TRIGGER                           0
--- ALTER TRIGGER                            0
--- CREATE COLLECTION TYPE                   0
--- CREATE STRUCTURED TYPE                   0
--- CREATE STRUCTURED TYPE BODY              0
--- CREATE CLUSTER                           0
--- CREATE CONTEXT                           0
--- CREATE DATABASE                          0
--- CREATE DIMENSION                         0
--- CREATE DIRECTORY                         0
--- CREATE DISK GROUP                        0
--- CREATE ROLE                              0
--- CREATE ROLLBACK SEGMENT                  0
--- CREATE SEQUENCE                          0
--- CREATE MATERIALIZED VIEW                 0
--- CREATE SYNONYM                           0
--- CREATE TABLESPACE                        0
--- CREATE USER                              0
--- 
--- DROP TABLESPACE                          0
--- DROP DATABASE                            0
--- 
--- REDACTION POLICY                         0
--- 
--- ORDS DROP SCHEMA                         0
--- ORDS ENABLE SCHEMA                       0
--- ORDS ENABLE OBJECT                       0
--- 
--- ERRORS                                   0
--- WARNINGS                                 0
+-- TABLESPACES
+CREATE TABLE "MONITOR.TABLESPACES" (
+    name        VARCHAR2(100) NOT NULL,
+    filecount   NUMBER NOT NULL,
+    size        NUMBER NOT NULL,
+    free        NUMBER NOT NULL,
+    used        NUMBER NOT NULL,
+    maxextend   NUMBER NOT NULL,
+    percfree    NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.TABLESPACES"
+    ADD CONSTRAINT "MONITOR.TABLESPACES_PK" PRIMARY KEY ( name );
+
+
+
+-- USERS
+CREATE TABLE "MONITOR.USERS" (
+    username            VARCHAR2(100) NOT NULL,
+    accStatus           VARCHAR2(100) NOT NULL,
+    common              VARCHAR2(100) NOT NULL,
+    expiryDate          DATE NOT NULL,
+    defaultTablespace   VARCHAR2(100) NOT NULL,
+    tempTablespace      VARCHAR2(100) NOT NULL,
+    profile             VARCHAR2(100) NOT NULL,
+    created             DATE NOT NULL,
+    timestamp           TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.USERS"
+    ADD CONSTRAINT "MONITOR.USERS_PK" PRIMARY KEY ( username );
+
+ALTER TABLE "MONITOR.USERS"
+    ADD CONSTRAINT "MONITOR.USERS_TABLESPACES_FK" FOREIGN KEY ( defaultTablespace )
+        REFERENCES "MONITOR.TABLESPACES" ( name )
+    NOT DEFERRABLE;
+
+
+
+-- SESSIONS
+CREATE TABLE "MONITOR.SESSIONS" (
+    sid         NUMBER NOT NULL,
+    username    VARCHAR2(100) NOT NULL,
+    status      VARCHAR2(100) NOT NULL,
+    server      VARCHAR2(100) NOT NULL,
+    schemaName  VARCHAR2(100) NOT NULL,
+    osUser      VARCHAR2(100) NOT NULL,
+    machine     VARCHAR2(100) NOT NULL,
+    port        NUMBER NOT NULL,
+    type        VARCHAR2(100),
+    logonTime   DATE NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.SESSIONS"
+    ADD CONSTRAINT "MONITOR.SESSIONS_PK" PRIMARY KEY ( sid );
+
+ALTER TABLE "MONITOR.SESSIONS"
+    ADD CONSTRAINT "MONITOR.SESSIONS_USERS_FK" FOREIGN KEY ( username )
+        REFERENCES "MONITOR.USERS" ( username )
+    NOT DEFERRABLE;
+
+
+
+-- SGA (faz sentido ter histórico p/ gráfico de barras)
+CREATE TABLE "MONITOR.SGA" (
+    name        VARCHAR2(100) NOT NULL,
+    total       NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.SGA"
+    ADD CONSTRAINT "MONITOR.SGA_PK" PRIMARY KEY ( name );
+
+-- HISTÓRICO SGA
+CREATE TABLE "MONITOR.SGA_HIST" (
+    name        VARCHAR2(100) NOT NULL,
+    total       NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.SGA_HIST"
+    ADD CONSTRAINT "MONITOR.SGA_HIST_PK" PRIMARY KEY ( name,timestamp );
+
+
+
+-- PGA (faz sentido ter histórico p/ gráfico de barras)
+CREATE TABLE "MONITOR.PGA" (
+    usedPga     NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.PGA"
+    ADD CONSTRAINT "MONITOR.PGA_PK" PRIMARY KEY ( usedPga );
+
+-- HISTÓRICO PGA
+CREATE TABLE "MONITOR.PGA_HIST" (
+    usedPga     NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.PGA_HIST"
+    ADD CONSTRAINT "MONITOR.PGA_HIST_PK" PRIMARY KEY ( usedPga,timestamp );
+
+
+
+-- CPU (faz sentido ter histórico p/ gráfico de barras)
+CREATE TABLE "MONITOR.CPU" (
+    username    VARCHAR2(100) NOT NULL,
+    cpuUsage    NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.CPU"
+    ADD CONSTRAINT "MONITOR.CPU_PK" PRIMARY KEY ( username );
+
+-- HISTÓRICO CPU
+CREATE TABLE "MONITOR.CPU_HIST" (
+    username    VARCHAR2(100) NOT NULL,
+    cpuUsage    NUMBER NOT NULL,
+    timestamp   TIMESTAMP NOT NULL
+)
+LOGGING;
+
+ALTER TABLE "MONITOR.CPU_HIST"
+    ADD CONSTRAINT "MONITOR.CPU_HIST_PK" PRIMARY KEY ( username,timestamp );
