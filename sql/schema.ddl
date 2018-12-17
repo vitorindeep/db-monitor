@@ -75,7 +75,7 @@ LOGGING;
 
 -- "SESSIONS
 CREATE TABLE "MONITOR"."SESSIONS" (
-    "sid"         NUMBER NOT NULL,
+    "sid"         VARCHAR2(100) NOT NULL,
     "username"    VARCHAR2(100) NOT NULL,
     "status"      VARCHAR2(100) NOT NULL,
     "server"      VARCHAR2(100) NOT NULL,
