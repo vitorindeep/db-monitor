@@ -204,85 +204,161 @@ public class Collector  {
                     }
                 }
 
+
                 // SGA
-                String sga = "select SID, USER# USER_ID, USERNAME, SERIAL# SERIAL ,c.CURRENT_TIMESTAMP TIMESTAMP" +
-                        " from v$session, (SELECT CURRENT_TIMESTAMP FROM dual) c " + " WHERE USERNAME IS NOT NULL" +
-                        " order by 1" ;
+                String sga = "select name, value from v$sga;";
 
                 resultSet = getStmt.executeQuery(sga);
 
                 while(resultSet.next()) {
+
+                    Statement sgaStmt = monitorConn.createStatement();
+                    String updateSga = " UPDATE \"MONITOR\".\"SGA\"" +
+                            " SET total = " + Float.parseFloat(resultSet.getString("VALUE")) +
+                            "," + " timestamp = CURRENT_TIMESTAMP "  +
+                            " WHERE name = "  + resultSet.getString("NAME");
+
+
+                    int i=0;
+                    i = sgaStmt.executeUpdate(updateSga);
+
+                    if(i==0) {
+
+                        sga = "INSERT INTO \"MONITOR\".\"SGA\" (name,total,timestamp) "
+                                + "VALUES(?, ?, CURRENT_TIMESTAMP)" ;
+                        psmt = monitorConn.prepareStatement(sga) ;
+
+                        psmt.setString(1,resultSet.getString("NAME")) ;
+                        psmt.setFloat(2,Float.parseFloat(resultSet.getString("VALUE")));
+                        psmt.executeUpdate();
+                    }
+
+                }
+
+
+                // PGA
+                String pga = "select name, value from v$sga;";
+
+                resultSet = getStmt.executeQuery(pga);
+
+                while(resultSet.next()) {
+
+                    Statement pgaStmt = monitorConn.createStatement();
+                    String updatePga = " UPDATE \"MONITOR\".\"PGA\"" +
+                            " SET usedPga = " + Float.parseFloat(resultSet.getString("VALUE")) +
+                            "," + " timestamp = CURRENT_TIMESTAMP "  +
+                            " WHERE name = "  + resultSet.getString("NAME");
+
+
+                    int i=0;
+                    i = pgaStmt.executeUpdate(updatePga);
+
+                    if(i==0) {
+
+                        pga = "INSERT INTO \"MONITOR\".\"PGA\" (name,usedPga,timestamp) "
+                                + "VALUES(?, ?, CURRENT_TIMESTAMP)" ;
+                        psmt = monitorConn.prepareStatement(pga) ;
+
+                        psmt.setString(1,resultSet.getString("NAME")) ;
+                        psmt.setFloat(2,Float.parseFloat(resultSet.getString("VALUE")));
+                        psmt.executeUpdate();
+                    }
+
+                }
+
+
+                // SESSIONS
+
+                String ses = "select sid, username, status, server, schemaname, osuser, machine, port, type, logon_time from v$session" +
+                                " where username IS NOT NULL; " ;
+
+                resultSet = getStmt.executeQuery(ses);
+
+                while(resultSet.next()) {
                     if(!resultSet.getString("USERNAME").equals("MANAGER")) {
 
-                        Statement stmt1 = monitorConn.createStatement();
-                        String tbs1 = " UPDATE SESSIONS" +
-                                " SET SERIAL = "+resultSet.getString("SERIAL")+
-                                "," + " TIMESTAMP = CURRENT_TIMESTAMP "  +
-                                " WHERE SID = "  + resultSet.getString("SID");
+                        Statement sesStmt = monitorConn.createStatement();
+                        String updateSes = " UPDATE \"MONITOR\".\"SESSIONS\"" +
+                                " SET username = "+resultSet.getString("USERNAME")+
+                                "," + " status = " + resultSet.getString("STATUS") +
+                                "," + " server = " + resultSet.getString("SERVER") +
+                                "," + " schemaName = " + resultSet.getString("SCHEMANAME") +
+                                "," + " osUser = " + resultSet.getString("OSUSER") +
+                                "," + " machine = " + resultSet.getString("MACHINE") +
+                                "," + " port = " + resultSet.getString("PORT") +
+                                "," + " type = " + resultSet.getString("TYPE") +
+                                "," + " logonTime = " + resultSet.getDate("LOGON_TIME") +
+                                "," + " timestamp = CURRENT_TIMESTAMP "  +
+                                " WHERE sid = "  + resultSet.getString("SID");
 
 
                         int i=0;
-                        i = stmt1.executeUpdate(tbs1);
+                        i = sesStmt.executeUpdate(updateSes);
 
                         if(i==0) {
 
-                            sga = "INSERT INTO SESSIONS (SID,USER_ID,USERNAME,SERIAL,TIMESTAMP)"
-                                    + "VALUES(?, ?, ?, ?, CURRENT_TIMESTAMP)" ;
-                            psmt = monitorConn.prepareStatement(sga) ;
+                            ses = "INSERT INTO \"MONITOR\".\"SESSIONS\""
+                                    + " (sid,username,status,server,schemaName,osUser,machine,port,type,logonTime,timestamp)"
+                                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)" ;
+                            psmt = monitorConn.prepareStatement(ses) ;
 
                             psmt.setString(1,resultSet.getString("SID")) ;
-                            psmt.setFloat(2,Float.parseFloat(resultSet.getString("USER_ID")));
-                            psmt.setString(3,resultSet.getString("USERNAME"));
-                            psmt.setString(4,resultSet.getString("SERIAL"));
+                            psmt.setString(2,resultSet.getString("USERNAME")) ;
+                            psmt.setString(3,resultSet.getString("STATUS")) ;
+                            psmt.setString(4,resultSet.getString("SERVER")) ;
+                            psmt.setString(5,resultSet.getString("SCHEMANAME")) ;
+                            psmt.setString(6,resultSet.getString("OSUSER")) ;
+                            psmt.setString(7,resultSet.getString("MACHINE")) ;
+                            psmt.setString(8,resultSet.getString("PORT")) ;
+                            psmt.setString(9,resultSet.getString("TYPE")) ;
+                            psmt.setDate(10,resultSet.getDate("LOGON_TIME")) ;
                             psmt.executeUpdate();
                         }
                     }
                 }
 
-                // IO
 
-                String io = "select c.CURRENT_TIMESTAMP  TIMESTAMP ,  v1.mem FREE_MEMORY, v2.writes WRITES , v3.rrs READS" +
-                        " from ( select sum(bytes)/1024 mem " +
-                        " from v$sgastat where name = 'free memory') v1, " +
-                        " (select SUM(VALUE) writes " +
-                        " from ( select metric_name,begin_time,end_time,value " +
-                        " from v$sysmetric_history " +
-                        " where metric_name = 'Physical Writes Per Sec' " +
-                        " order by 2 )) v2, " +
-                        " (select SUM(VALUE) rrs " +
-                        " from ( select metric_name,begin_time,end_time,value " +
-                        " from v$sysmetric_history " +
-                        " where metric_name = 'Physical Reads Per Sec' " +
-                        " order by 2 )) v3 , " +
-                        " (SELECT CURRENT_TIMESTAMP FROM dual) c " ;
-                resultSet = getStmt.executeQuery(io);
+                // CPU
+                String cpu = "select name, value from v$sga;";
+
+                resultSet = getStmt.executeQuery(cpu);
 
                 while(resultSet.next()) {
 
+                    Statement cpuStmt = monitorConn.createStatement();
+                    String updateCpu = " UPDATE \"MONITOR\".\"CPU\"" +
+                            " SET cpuUsage = " + Float.parseFloat(resultSet.getString("CPU_USAGE")) +
+                            "," + " timestamp = CURRENT_TIMESTAMP "  +
+                            " WHERE username = "  + resultSet.getString("USERNAME");
 
-                    io = "INSERT INTO IO (TIMESTAMP , WRITES, READS , FREE_MEMORY)"
-                            + " VALUES(CURRENT_TIMESTAMP, ?, ?, ?)";
-                    psmt = monitorConn.prepareStatement(io) ;
 
-                    psmt.setFloat(1,Float.parseFloat(resultSet.getString("WRITES"))) ;
-                    psmt.setFloat(2,Float.parseFloat(resultSet.getString("READS"))) ;
-                    psmt.setFloat(3,Float.parseFloat(resultSet.getString("FREE_MEMORY"))) ;
-                    psmt.executeUpdate();
-                    psmt.close() ;
+                    int i=0;
+                    i = cpuStmt.executeUpdate(updateCpu);
+
+                    if(i==0) {
+
+                        cpu = "INSERT INTO \"MONITOR\".\"CPU\" (username,cpuUsage,timestamp) "
+                                + "VALUES(?, ?, CURRENT_TIMESTAMP)" ;
+                        psmt = monitorConn.prepareStatement(cpu) ;
+
+                        psmt.setString(1,resultSet.getString("USERNAME")) ;
+                        psmt.setFloat(2,Float.parseFloat(resultSet.getString("CPU_USAGE")));
+                        psmt.executeUpdate();
+                    }
+
                 }
 
-
-                Thread.sleep(5000);
+                // esperar 10 segundos para repetir
+                Thread.sleep(10000);
             }
 
         }catch(ClassNotFoundException e){
-            System.out.println(e) ;
+            System.out.println("Classe não existe ou não foi encontrada.") ;
         }catch(SQLException e){
-            System.out.println(e) ;
+            System.out.println("Erro no SQL.") ;
         } catch (InterruptedException ex) {
             Logger.getLogger(Collector.class.getName()).log(Level.SEVERE, null, ex);
         }
-
 
 
 
