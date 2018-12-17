@@ -115,8 +115,8 @@ public class Collector  {
                 System.out.println("$ TABLESPACES collected.");
 
 
-                System.out.println("$ DATAFILES start.");
                 // DATAFILES
+                System.out.println("$ DATAFILES start.");
                 String getDatafiles = "SELECT file_name, file_id, tablespace_name, bytes, blocks, status, autoextensible, maxbytes, maxblocks, online_status" +
                                         " FROM dba_data_files" ;
                 resultSet = getStmt.executeQuery(getDatafiles);
@@ -125,15 +125,15 @@ public class Collector  {
                     Statement stmt1 = monitorConn.createStatement();
 
                     String updateDatafiles = "UPDATE \"MONITOR\".\"DATAFILES\" " +
-                            " SET bytes = " + Float.parseFloat(resultSet.getString("BYTES")) +
-                            "," + " blocks = " + Float.parseFloat(resultSet.getString("BLOCKS")) +
-                            "," + " status = " + resultSet.getString("STATUS") +
-                            "," + " autoextensible = " + resultSet.getString("AUTOEXTENSIBLE") +
-                            "," + " maxbytes = " + Float.parseFloat(resultSet.getString("MAXBYTES")) +
-                            "," + " maxblocks = " + Float.parseFloat(resultSet.getString("MAXBLOCKS")) +
-                            "," + " onlinestatus = " + resultSet.getString("ONLINE_STATUS") +
-                            "," + " timestamp = CURRENT_TIMESTAMP" +
-                            " WHERE filename = " + "'" + resultSet.getString("FILE_NAME") + "'";
+                            " SET \"bytes\" = " + Float.parseFloat(resultSet.getString("BYTES")) +
+                            "," + " \"blocks\" = " + Float.parseFloat(resultSet.getString("BLOCKS")) +
+                            //"," + " \"status\" = " + resultSet.getString("STATUS") +
+                            //"," + " \"autoextensible\" = " + resultSet.getString("AUTOEXTENSIBLE") +
+                            "," + " \"maxbytes\" = " + Float.parseFloat(resultSet.getString("MAXBYTES")) +
+                            "," + " \"maxblocks\" = " + Float.parseFloat(resultSet.getString("MAXBLOCKS")) +
+                            //"," + " \"onlinestatus\" = " + resultSet.getString("ONLINE_STATUS") +
+                            "," + " \"timestamp\" = CURRENT_TIMESTAMP" +
+                            " WHERE \"filename\" = " + "'" + resultSet.getString("FILE_NAME") + "'";
 
                     int i;
                     i = stmt1.executeUpdate(updateDatafiles);
@@ -141,8 +141,12 @@ public class Collector  {
                     if(i==0) {
 
                         String insertDatafiles = "INSERT INTO \"MONITOR\".\"DATAFILES\" "
-                                + "(filename,fileid,tablename,bytes,blocks,status,autoextensible,maxbytes,maxblocks,onlinestatus,timestamp) "
-                                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)" ;
+                                + "(\"filename\",\"fileid\",\"tablename\",\"bytes\",\"blocks\"," +
+                                //"\"status\",\"autoextensible\"," +
+                                "\"maxbytes\",\"maxblocks\"," +
+                                //"\"onlinestatus\"," +
+                                "\"timestamp\") "
+                                + "VALUES(?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)" ;
                         psmt = monitorConn.prepareStatement(insertDatafiles) ;
 
 
@@ -151,11 +155,11 @@ public class Collector  {
                         psmt.setString(3,resultSet.getString("TABLESPACE_NAME")) ;
                         psmt.setFloat(4,Float.parseFloat(resultSet.getString("BYTES"))) ;
                         psmt.setFloat(5,Float.parseFloat(resultSet.getString("BLOCKS"))) ;
-                        psmt.setString(6,resultSet.getString("STATUS")) ;
-                        psmt.setString(7,resultSet.getString("AUTOEXTENSIBLE")) ;
-                        psmt.setFloat(8,Float.parseFloat(resultSet.getString("MAXBYTES"))) ;
-                        psmt.setFloat(9,Float.parseFloat(resultSet.getString("MAXBLOCKS"))) ;
-                        psmt.setString(10,resultSet.getString("ONLINE_STATUS")) ;
+                        //psmt.setString(6,resultSet.getString("STATUS")) ;
+                        //psmt.setString(7,resultSet.getString("AUTOEXTENSIBLE")) ;
+                        psmt.setFloat(6,Float.parseFloat(resultSet.getString("MAXBYTES"))) ;
+                        psmt.setFloat(7,Float.parseFloat(resultSet.getString("MAXBLOCKS"))) ;
+                        //psmt.setString(10,resultSet.getString("ONLINE_STATUS")) ;
                         psmt.executeUpdate();
                         psmt.close() ;
                     }
