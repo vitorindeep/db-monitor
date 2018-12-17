@@ -52,7 +52,7 @@ ORDER BY "% Free" desc;
 select * from dba_tablespaces;
   
 -- DATAFILES INFO
-maxbloc
+SELECT file_name, file_id, tablespace_name, bytes, blocks, status, autoextensible, maxbytes, maxblocks, online_status FROM dba_data_files;
 
 -- USERS
 SELECT USERNAME, ACCOUNT_STATUS, COMMON, EXPIRY_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE, PROFILE, CREATED
