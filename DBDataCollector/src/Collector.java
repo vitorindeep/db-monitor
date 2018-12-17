@@ -48,29 +48,32 @@ public class Collector  {
 
 
             while(true){
+
                 // TABLESPACES
+                System.out.println("$ TABLESPACES start.");
                 PreparedStatement psmt;
                 String getTablespaces = "SELECT " +
-                        "   ts.tablespace_name, \"File Count\"," +
-                        "   TRUNC(\"SIZE(MB)\", 2) \"Size(MB)\"," +
-                        "   TRUNC(fr.\"FREE(MB)\", 2) \"Free(MB)\"," +
-                        "   TRUNC(\"SIZE(MB)\" - \"FREE(MB)\", 2) \"Used(MB)\"," +
-                        "   df.\"MAX_EXT\" \"Max Ext(MB)\"," +
-                        "   (fr.\"FREE(MB)\" / df.\"SIZE(MB)\") * 100 \"% Free\"" +
-                        "   FROM " +
-                        "   (SELECT tablespace_name," +
-                        "   SUM (bytes) / (1024 * 1024) \"FREE(MB)\"" +
-                        "   FROM dba_free_space" +
-                        "   GROUP BY tablespace_name) fr," +
-                        "   (SELECT tablespace_name, SUM(bytes) / (1024 * 1024) \"SIZE(MB)\", COUNT(*)" +
-                        "   \"File Count\", SUM(maxbytes) / (1024 * 1024) \"MAX_EXT\"" +
-                        "   FROM dba_data_files" +
-                        "   GROUP BY tablespace_name) df," +
-                        "   (SELECT tablespace_name" +
-                        "   FROM dba_tablespaces) ts" +
-                        "   WHERE fr.tablespace_name = df.tablespace_name (+)" +
-                        "   AND fr.tablespace_name = ts.tablespace_name (+)" +
-                        "   ORDER BY \"% Free\" desc;";
+                        "ts.tablespace_name, " +
+                        "\"File Count\", " +
+                        "TRUNC(\"SIZE(MB)\", 2) \"Size(MB)\", " +
+                        "TRUNC(fr.\"FREE(MB)\", 2) \"Free(MB)\", " +
+                        "TRUNC(\"SIZE(MB)\" - \"FREE(MB)\", 2) \"Used(MB)\", " +
+                        "df.\"MAX_EXT\" \"Max Ext(MB)\", " +
+                        "(fr.\"FREE(MB)\" / df.\"SIZE(MB)\") * 100 \"% Free\" " +
+                        "FROM " +
+                        "(SELECT tablespace_name, " +
+                        "SUM (bytes) / (1024 * 1024) \"FREE(MB)\" " +
+                        "FROM dba_free_space " +
+                        "GROUP BY tablespace_name) fr, " +
+                        "(SELECT tablespace_name, SUM(bytes) / (1024 * 1024) \"SIZE(MB)\", COUNT(*) " +
+                        "\"File Count\", SUM(maxbytes) / (1024 * 1024) \"MAX_EXT\" " +
+                        "FROM dba_data_files " +
+                        "GROUP BY tablespace_name) df, " +
+                        "(SELECT tablespace_name " +
+                        "FROM dba_tablespaces) ts " +
+                        "WHERE fr.tablespace_name = df.tablespace_name (+) " +
+                        "AND fr.tablespace_name = ts.tablespace_name (+) " +
+                        "ORDER BY \"% Free\" desc";
                 Statement getStmt = sysConn.createStatement();
                 ResultSet resultSet = getStmt.executeQuery(getTablespaces);
 
@@ -78,24 +81,23 @@ public class Collector  {
 
                     Statement monitorStmt = monitorConn.createStatement();
                     String updateQuery = "UPDATE \"MONITOR\".\"TABLESPACES\" " +
-                            " SET filecount = " + Float.parseFloat(resultSet.getString("File Count")) +
-                            "," + " size = " + resultSet.getString("Size(MB)") +
-                            "," + " free = " + resultSet.getString("Free(MB)") +
-                            "," + " used = " + resultSet.getString("Used(MB)") +
-                            "," + " maxextend = " + resultSet.getString("Max Ext(MB)") +
-                            "," + " percfree = " + resultSet.getString("% Free") +
-                            "," + " timestamp = CURRENT_TIMESTAMP" +
-                            " WHERE name = " + "'" + resultSet.getString("TABLESPACE_NAME") + "'";
+                            " SET \"filecount\" = " + Float.parseFloat(resultSet.getString("File Count")) +
+                            "," + " \"size\" = " + resultSet.getString("Size(MB)") +
+                            "," + " \"free\" = " + resultSet.getString("Free(MB)") +
+                            "," + " \"used\" = " + resultSet.getString("Used(MB)") +
+                            "," + " \"maxextend\" = " + resultSet.getString("Max Ext(MB)") +
+                            "," + " \"percfree\" = " + resultSet.getString("% Free") +
+                            "," + " \"timestamp\" = CURRENT_TIMESTAMP" +
+                            " WHERE \"name\" = " + "'" + resultSet.getString("TABLESPACE_NAME") + "'";
 
                     int i=0;
                     // devolve o número queries afetadas
                     i = monitorStmt.executeUpdate(updateQuery);
-
                     // se não havia update a fazer (pq não constava inicialmente)
                     if(i==0) {
 
-                        String insertQuery = "INSERT INTO \"MONITOR.TABLESPACES\" " +
-                                "(name,filecount,size,free,used,maxextend,percfree,timestamp) " +
+                        String insertQuery = "INSERT INTO \"MONITOR\".\"TABLESPACES\" " +
+                                "(\"name\",\"filecount\",\"size\",\"free\",\"used\",\"maxextend\",\"percfree\",\"timestamp\") " +
                                 "VALUES(?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)" ;
                         psmt = monitorConn.prepareStatement(insertQuery);
 
@@ -110,11 +112,13 @@ public class Collector  {
                         psmt.close() ;
                     }
                 }
+                System.out.println("$ TABLESPACES collected.");
 
 
+                System.out.println("$ DATAFILES start.");
                 // DATAFILES
                 String getDatafiles = "SELECT file_name, file_id, tablespace_name, bytes, blocks, status, autoextensible, maxbytes, maxblocks, online_status" +
-                                        " FROM dba_data_files;" ;
+                                        " FROM dba_data_files" ;
                 resultSet = getStmt.executeQuery(getDatafiles);
                 while(resultSet.next()) {
 
@@ -157,11 +161,13 @@ public class Collector  {
                     }
 
                 }
+                System.out.println("$ DATAFILES collected.");
 
 
+                System.out.println("$ USERS start.");
                 // USERS
                 String users = "SELECT USERNAME, ACCOUNT_STATUS, COMMON, EXPIRY_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE, PROFILE, CREATED" +
-                        " FROM dba_users;";
+                        " FROM dba_users";
                 resultSet = getStmt.executeQuery(users);
 
                 while(resultSet.next()) {
@@ -203,10 +209,12 @@ public class Collector  {
                         psmt.close() ;
                     }
                 }
+                System.out.println("$ USERS collected.");
 
 
+                System.out.println("$ SGA start.");
                 // SGA
-                String sga = "select name, value from v$sga;";
+                String sga = "select name, value from v$sga";
 
                 resultSet = getStmt.executeQuery(sga);
 
@@ -234,10 +242,12 @@ public class Collector  {
                     }
 
                 }
+                System.out.println("$ SGA collected.");
 
 
+                System.out.println("$ PGA start.");
                 // PGA
-                String pga = "select name, value from v$sga;";
+                String pga = "select name, value from v$sga";
 
                 resultSet = getStmt.executeQuery(pga);
 
@@ -265,12 +275,13 @@ public class Collector  {
                     }
 
                 }
+                System.out.println("$ PGA collected.");
 
 
+                System.out.println("$ SESSIONS start.");
                 // SESSIONS
-
                 String ses = "select sid, username, status, server, schemaname, osuser, machine, port, type, logon_time from v$session" +
-                                " where username IS NOT NULL; " ;
+                                " where username IS NOT NULL " ;
 
                 resultSet = getStmt.executeQuery(ses);
 
@@ -316,10 +327,12 @@ public class Collector  {
                         }
                     }
                 }
+                System.out.println("$ SESSIONS collected.");
 
 
+                System.out.println("$ CPU start.");
                 // CPU
-                String cpu = "select name, value from v$sga;";
+                String cpu = "select name, value from v$sga";
 
                 resultSet = getStmt.executeQuery(cpu);
 
@@ -347,15 +360,17 @@ public class Collector  {
                     }
 
                 }
+                System.out.println("$ CPU collected.");
+
 
                 // esperar 10 segundos para repetir
                 Thread.sleep(10000);
             }
 
         }catch(ClassNotFoundException e){
-            System.out.println("Classe não existe ou não foi encontrada.") ;
+            System.out.println("Classe não existe ou não foi encontrada.: " + e) ;
         }catch(SQLException e){
-            System.out.println("Erro no SQL.") ;
+            System.out.println("Erro no SQL:" + e) ;
         } catch (InterruptedException ex) {
             Logger.getLogger(Collector.class.getName()).log(Level.SEVERE, null, ex);
         }
