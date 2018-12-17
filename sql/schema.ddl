@@ -116,17 +116,19 @@ LOGGING;
 
 -- "PGA (faz sentido ter histórico p/ gráfico de barras)
 CREATE TABLE "MONITOR"."PGA" (
+    "name"        VARCHAR2(100) NOT NULL,
     "usedPga"     NUMBER NOT NULL,
     "timestamp"   TIMESTAMP NOT NULL,
-     CONSTRAINT PGA_PK PRIMARY KEY ( "usedPga" )
+     CONSTRAINT PGA_PK PRIMARY KEY ( "name" )
 )
 LOGGING;
 
 -- HISTÓRICO "PGA
 CREATE TABLE "MONITOR"."PGA_HIST" (
+    "name"        VARCHAR2(100) NOT NULL,
     "usedPga"     NUMBER NOT NULL,
     "timestamp"   TIMESTAMP NOT NULL,
-    CONSTRAINT PGA_HIST_PK PRIMARY KEY ( "usedPga","timestamp" )
+    CONSTRAINT PGA_HIST_PK PRIMARY KEY ( "name","timestamp" )
 )
 LOGGING;
 
