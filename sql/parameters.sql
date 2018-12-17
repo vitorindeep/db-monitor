@@ -61,17 +61,13 @@ FROM dba_users;
 
 -- PGA E SGA MEMORY
 -- sga
-select sum(bytes) from v$sgastat
-    where POOL='shared pool' and NOT NAME='free memory';
-select * from v$sysstat
-    where NAME LIKE 'session%';
-select * from v$sesstat;
-    where NAME LIKE 'session%';
-select * from v$sga;
+--select sum(bytes) from v$sgastat
+--    where POOL='shared pool' and NOT NAME='free memory';
+select name, value from v$sga;
 -- pga
 SELECT name, value FROM v$pgastat
     WHERE NAME='total PGA inuse';
-SELECT ROUND(SUM(pga_used_mem)/(1024*1024),2) PGA_USED_MB FROM v$process;
+--SELECT ROUND(SUM(pga_used_mem)/(1024*1024),2) PGA_USED_MB FROM v$process;
 
 -- SESSIONS
 select sid, username, status, server, schemaname, osuser, machine, port, type, logon_time from v$session
