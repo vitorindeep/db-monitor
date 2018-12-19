@@ -13,9 +13,9 @@ CREATE OR REPLACE TRIGGER add_to_PGA_HIST
 AFTER UPDATE ON "MONITOR"."PGA" FOR EACH ROW
 BEGIN
     INSERT INTO "MONITOR"."PGA_HIST"
-        ("usedPga","timestamp")
+        ("name","usedPga","timestamp")
     VALUES
-        (:OLD."usedPga",:OLD."timestamp");
+        (:OLD."name",:OLD."usedPga",:OLD."timestamp");
 END;
 
 -- CPU HISTORIC
