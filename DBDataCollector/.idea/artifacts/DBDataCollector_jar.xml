@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="DBDataCollector:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DBDataCollector_jar</output-path>
+    <root id="archive" name="DBDataCollector.jar">
+      <element id="module-output" name="DBDataCollector" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/ojdbc8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
