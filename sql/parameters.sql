@@ -98,3 +98,19 @@ select (select value from v$osstat
 select * from v$osstat
     where STAT_NAME='BUSY_TIME'
         or STAT_NAME='IDLE_TIME';
+        
+        
+        
+        
+SELECT tablespace_name,
+   SUM (bytes) / (1024 * 1024) "FREE(MB)"
+   FROM dba_free_space
+    GROUP BY tablespace_name;
+    
+SELECT tablespace_name, SUM(bytes) / (1024 * 1024) "SIZE(MB)", COUNT(*)
+"File Count", SUM(maxbytes) / (1024 * 1024) "MAX_EXT"
+FROM dba_data_files
+GROUP BY tablespace_name;
+
+SELECT tablespace_name, status, contents
+FROM dba_tablespaces;

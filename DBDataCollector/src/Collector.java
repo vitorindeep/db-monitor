@@ -383,6 +383,8 @@ public class Collector  {
                 System.out.println("$ CPU collected.");
 
 
+                // close sysConn
+                getStmt.close();
                 // esperar 10 segundos para repetir
                 Thread.sleep(10000);
             }
