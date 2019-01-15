@@ -17,19 +17,143 @@ http.createServer((req,res)=>{
 		res.writeHead(200, {'Content-Type': 'text/html'})
 		axios.get('http://localhost:8585/ords/monitor/datafiles/df')
 			.then(resposta => {
-				console.log(resposta.data.items)
-				res.render('../view/datafiles.pug', {lista: resposta.data.items})
+				res.write(pug.renderFile('../view/datafiles.pug', {lista: resposta.data.items}))
+				res.end()
 			})
 			.catch(erro => {
 				console.log('Erro ao ler JSON da API REST.')
-				res.render('../view/erro.pug', {error: erro, message: 'Erro ao ler JSON da API REST.'})
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
 			})
-		res.end()
+	}
+	else if(purl.pathname == '/cpuhist'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/cpu.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}else if(purl.pathname == '/cpu'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
+			.then(resposta => {
+				lista = []
+				for(i=4;i<resposta.data.items.length;i+=5)
+					lista.push('[\''+resposta.data.items[i].username+'\','+resposta.data.items[i].cpuusage+']')
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\''}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/pgahist'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/pga/pga')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/pga.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/pga'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/pga/pga')
+			.then(resposta => {
+				lista = []
+				for(i=4;i<resposta.data.items.length;i+=5)
+					lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].usedpga+']')
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\''}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/sgahist'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/sga/sga')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/sga.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/sga'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/sga/sga')
+			.then(resposta => {
+				lista = []
+				for(i=4;i<resposta.data.items.length;i+=5)
+					lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].total+']')
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Total SGA\''}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/sessions'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/sessions/sessions')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/sessions.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/tablespaces'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/tablespaces/tablespaces')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/tablespaces.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
+	}
+	else if(purl.pathname == '/users'){
+		res.writeHead(200, {'Content-Type': 'text/html'})
+		axios.get('http://localhost:8585/ords/monitor/users/usr')
+			.then(resposta => {
+				res.write(pug.renderFile('../view/users.pug', {lista: resposta.data.items}))
+				res.end()
+			})
+			.catch(erro => {
+				console.log('Erro ao ler JSON da API REST.')
+				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
+				res.end()
+			})
 	}
 	else if(estilo.test(purl.pathname)){
 		res.writeHead(200, {'Content-Type': 'text/css'})
 		fs.readFile('../stylesheets/style.css', (erro, dados)=>{
-			console.log(purl.pathname)
 			if(!erro)
 				res.write(dados)
 			else
@@ -39,7 +163,7 @@ http.createServer((req,res)=>{
 	}
 	else {
 		res.writeHead(200, {'Content-Type': 'text/html'})
-		res.write('<p><b>Erro, pedido desconhecido: </b> ' + purl.pathname + '</p>')
+		res.write(pug.renderFile('../view/error.pug', {error: 'Erro de acesso', message: 'Pedido desconhecido: '+purl.pathname}))
 		res.end()
 	}
 }).listen(5000, ()=>{
