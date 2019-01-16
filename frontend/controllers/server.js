@@ -43,8 +43,12 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
 			.then(resposta => {
 				lista = []
-				for(i=4;i<resposta.data.items.length;i+=5)
-					lista.push('[\''+resposta.data.items[i].username+'\','+resposta.data.items[i].cpuusage+']')
+				for(i=0;i<resposta.data.items.length;i++){
+					if(i%5==2)
+						lista.push('[\''+resposta.data.items[i].username+'\','+resposta.data.items[i].cpuusage+']')
+					else
+						lista.push('[\'\','+resposta.data.items[i].cpuusage+']')
+				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\''}))
 				res.end()
 			})
@@ -72,8 +76,12 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/pga/pga')
 			.then(resposta => {
 				lista = []
-				for(i=4;i<resposta.data.items.length;i+=5)
-					lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].usedpga+']')
+				for(i=0;i<resposta.data.items.length;i++){
+					if(i%5==2)
+						lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].usedpga+']')
+					else
+						lista.push('[\'\','+resposta.data.items[i].usedpga+']')
+				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\''}))
 				res.end()
 			})
@@ -101,8 +109,12 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/sga/sga')
 			.then(resposta => {
 				lista = []
-				for(i=4;i<resposta.data.items.length;i+=5)
-					lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].total+']')
+				for(i=0;i<resposta.data.items.length;i++){
+					if(i%5==2)
+						lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].total+']')
+					else
+						lista.push('[\'\','+resposta.data.items[i].total+']')
+				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Total SGA\''}))
 				res.end()
 			})
