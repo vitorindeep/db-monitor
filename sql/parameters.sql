@@ -66,7 +66,8 @@ FROM dba_users;
 select name, value from v$sga;
 -- pga
 SELECT name, value FROM v$pgastat
-    WHERE NAME='total PGA inuse';
+    WHERE NAME='total PGA inuse'
+    OR NAME='total PGA allocated';
 --SELECT ROUND(SUM(pga_used_mem)/(1024*1024),2) PGA_USED_MB FROM v$process;
 
 -- SESSIONS

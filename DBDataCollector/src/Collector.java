@@ -257,7 +257,7 @@ public class Collector  {
 
                 // PGA
                 System.out.println("$ PGA start.");
-                String pga = "select name, value from v$sga";
+                String pga = "SELECT name, value FROM v$pgastat WHERE NAME='total PGA inuse' OR NAME='total PGA allocated'";
                 resultSet = getStmt.executeQuery(pga);
 
                 while(resultSet.next()) {
