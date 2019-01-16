@@ -65,7 +65,7 @@ CREATE TABLE "MONITOR"."USERS" (
     "profile"             VARCHAR2(100) NOT NULL,
     "created"             DATE NOT NULL,
     "timestamp"           TIMESTAMP NOT NULL,
-    CONSTRAINT USERS_PK PRIMARY KEY ( "username" ),
+    CONSTRAINT USERS_PK PRIMARY KEY ( "username" , "defaultTablespace" ),
     CONSTRAINT USERS_TABLESPACES_FK FOREIGN KEY ( "defaultTablespace" )
         REFERENCES "MONITOR"."TABLESPACES" ( "name" )
 )
