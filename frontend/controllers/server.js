@@ -49,7 +49,7 @@ http.createServer((req,res)=>{
 					else
 						lista.push('[\'\','+resposta.data.items[i].cpuusage+']')
 				}
-				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\''}))
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\'',label:'\'Units\''}))
 				res.end()
 			})
 			.catch(erro => {
@@ -82,7 +82,7 @@ http.createServer((req,res)=>{
 					else
 						lista.push('[\'\','+resposta.data.items[i].usedpga+']')
 				}
-				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\''}))
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\'',label:'\'Bytes\''}))
 				res.end()
 			})
 			.catch(erro => {
@@ -115,7 +115,7 @@ http.createServer((req,res)=>{
 					else
 						lista.push('[\'\','+resposta.data.items[i].total+']')
 				}
-				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Total SGA\''}))
+				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Total SGA\'',label:'\'Bytes\''}))
 				res.end()
 			})
 			.catch(erro => {
