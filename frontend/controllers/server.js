@@ -43,11 +43,16 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
 			.then(resposta => {
 				lista = []
-				for(i=0;i<resposta.data.items.length;i++){
-					if(i%5==2)
-						lista.push('[\''+resposta.data.items[i].username+'\','+resposta.data.items[i].cpuusage+']')
-					else
-						lista.push('[\'\','+resposta.data.items[i].cpuusage+']')
+				nomes = ['[\'Time\'']
+				for(i=0;i<resposta.data.items.length;i+=5)
+					nomes.push('\''+resposta.data.items[i].username+'\'')
+				lista.push(nomes+']')
+				for(j=0;j<5;j++){
+					tempo = []
+					tempo.push('[\''+resposta.data.items[j].timestamp+'\'')
+					for(k=j;k<resposta.data.items.length;k+=5)
+						tempo.push(resposta.data.items[k].cpuusage)
+					lista.push(tempo+']')
 				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\'',label:'\'Units\''}))
 				res.end()
@@ -76,11 +81,16 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/pga/pga')
 			.then(resposta => {
 				lista = []
-				for(i=0;i<resposta.data.items.length;i++){
-					if(i%5==2)
-						lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].usedpga+']')
-					else
-						lista.push('[\'\','+resposta.data.items[i].usedpga+']')
+				nomes = ['[\'Time\'']
+				for(i=0;i<resposta.data.items.length;i+=5)
+					nomes.push('\''+resposta.data.items[i].name+'\'')
+				lista.push(nomes+']')
+				for(j=0;j<5;j++){
+					tempo = []
+					tempo.push('[\''+resposta.data.items[j].timestamp+'\'')
+					for(k=j;k<resposta.data.items.length;k+=5)
+						tempo.push(resposta.data.items[k].usedpga)
+					lista.push(tempo+']')
 				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\'',label:'\'Bytes\''}))
 				res.end()
@@ -109,11 +119,16 @@ http.createServer((req,res)=>{
 		axios.get('http://localhost:8585/ords/monitor/sga/sga')
 			.then(resposta => {
 				lista = []
-				for(i=0;i<resposta.data.items.length;i++){
-					if(i%5==2)
-						lista.push('[\''+resposta.data.items[i].name+'\','+resposta.data.items[i].total+']')
-					else
-						lista.push('[\'\','+resposta.data.items[i].total+']')
+				nomes = ['[\'Time\'']
+				for(i=0;i<resposta.data.items.length;i+=5)
+					nomes.push('\''+resposta.data.items[i].name+'\'')
+				lista.push(nomes+']')
+				for(j=0;j<5;j++){
+					tempo = []
+					tempo.push('[\''+resposta.data.items[j].timestamp+'\'')
+					for(k=j;k<resposta.data.items.length;k+=5)
+						tempo.push(resposta.data.items[k].total)
+					lista.push(tempo+']')
 				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Total SGA\'',label:'\'Bytes\''}))
 				res.end()
