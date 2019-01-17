@@ -26,19 +26,7 @@ http.createServer((req,res)=>{
 				res.end()
 			})
 	}
-	else if(purl.pathname == '/cpuhist'){
-		res.writeHead(200, {'Content-Type': 'text/html'})
-		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
-			.then(resposta => {
-				res.write(pug.renderFile('../view/cpu.pug', {lista: resposta.data.items}))
-				res.end()
-			})
-			.catch(erro => {
-				console.log('Erro ao ler JSON da API REST.')
-				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
-				res.end()
-			})
-	}else if(purl.pathname == '/cpu'){
+	else if(purl.pathname == '/cpu'){
 		res.writeHead(200, {'Content-Type': 'text/html'})
 		axios.get('http://localhost:8585/ords/monitor/cpu/cpu')
 			.then(resposta => {
@@ -55,19 +43,6 @@ http.createServer((req,res)=>{
 					lista.push(tempo+']')
 				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'CPU Usage\'',label:'\'Units\''}))
-				res.end()
-			})
-			.catch(erro => {
-				console.log('Erro ao ler JSON da API REST.')
-				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
-				res.end()
-			})
-	}
-	else if(purl.pathname == '/pgahist'){
-		res.writeHead(200, {'Content-Type': 'text/html'})
-		axios.get('http://localhost:8585/ords/monitor/pga/pga')
-			.then(resposta => {
-				res.write(pug.renderFile('../view/pga.pug', {lista: resposta.data.items}))
 				res.end()
 			})
 			.catch(erro => {
@@ -93,19 +68,6 @@ http.createServer((req,res)=>{
 					lista.push(tempo+']')
 				}
 				res.write(pug.renderFile('../view/chart.pug', {lista: lista,nome: '\'Used PGA\'',label:'\'Bytes\''}))
-				res.end()
-			})
-			.catch(erro => {
-				console.log('Erro ao ler JSON da API REST.')
-				res.write(pug.renderFile('../view/error.pug', {error: 'Erro de render', message: 'Erro ao ler JSON da API REST.'}))
-				res.end()
-			})
-	}
-	else if(purl.pathname == '/sgahist'){
-		res.writeHead(200, {'Content-Type': 'text/html'})
-		axios.get('http://localhost:8585/ords/monitor/sga/sga')
-			.then(resposta => {
-				res.write(pug.renderFile('../view/sga.pug', {lista: resposta.data.items}))
 				res.end()
 			})
 			.catch(erro => {
