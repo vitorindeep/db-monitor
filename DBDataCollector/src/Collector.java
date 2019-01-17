@@ -383,6 +383,42 @@ public class Collector  {
                 System.out.println("$ CPU collected.");
 
 
+
+                // CPU clean entries with more than 13 secs (some spare time for slow systems)
+                System.out.println("$ CPU cleaning start.");
+                String cpuInactive = "select \"username\", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP - \"timestamp\"," +
+                        " trunc((extract(second from CURRENT_TIMESTAMP - \"timestamp\")" +
+                        " + 60 * (extract(minute from CURRENT_TIMESTAMP - \"timestamp\")" +
+                        " + 60 * (extract(hour from CURRENT_TIMESTAMP - \"timestamp\")" +
+                        " + 24 * (extract(day from CURRENT_TIMESTAMP - \"timestamp\") ))))) as seconds" +
+                        " from \"MONITOR\".\"CPU\"";
+                resultSet = getStmt.executeQuery(cpuInactive);
+
+                while(resultSet.next()) {
+
+                    // caso registo tenha mais de 13 secs de atraso
+                    if(Float.parseFloat(resultSet.getString("seconds")) >= 13 ) {
+                        System.out.println("DELETE " + resultSet.getString("USERNAME"));
+
+                        // eliminar de CPU
+                        cpuInactive = "DELETE FROM \"MONITOR\".\"CPU\" "
+                                + "WHERE \"username\" = ?";
+                        psmt = monitorConn.prepareStatement(cpuInactive);
+                        psmt.setString(1, resultSet.getString("USERNAME"));
+                        psmt.executeUpdate();
+
+                        // eliminar de CPU_HIST
+                        cpuInactive = "DELETE FROM \"MONITOR\".\"CPU_HIST\" "
+                                + "WHERE \"username\" = ?";
+                        psmt = monitorConn.prepareStatement(cpuInactive);
+                        psmt.setString(1, resultSet.getString("USERNAME"));
+                        psmt.executeUpdate();
+
+                        psmt.close();
+                    }
+                }
+                System.out.println("$ CPU cleaned.");
+
                 // close sysConn
                 getStmt.close();
                 // esperar 10 segundos para repetir
