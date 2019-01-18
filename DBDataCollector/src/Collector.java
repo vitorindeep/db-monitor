@@ -397,7 +397,7 @@ public class Collector  {
                 while(resultSet.next()) {
 
                     // caso registo tenha mais de 13 secs de atraso
-                    if(Float.parseFloat(resultSet.getString("seconds")) >= 13 ) {
+                    if(Float.parseFloat(resultSet.getString("seconds")) >= 9 ) {
                         System.out.println("DELETE " + resultSet.getString("USERNAME"));
 
                         // eliminar de CPU
